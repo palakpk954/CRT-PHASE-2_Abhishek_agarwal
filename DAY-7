@@ -1,0 +1,87 @@
+LeetCode 92
+Reverse a LL II
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* prevPtr = dummy;
+        ListNode* curr = head;
+
+        for(int i = 0; i < left - 1; i++) {
+            prevPtr = prevPtr->next;
+            curr = curr->next;
+        }
+        ListNode* subListHead = curr;
+        ListNode* prev = nullptr;
+        for(int i = 0; i < right - left + 1; i++) {
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        prevPtr->next = prev;
+        subListHead->next = curr;
+        return dummy->next;
+    }
+};
+
+LeetCode 20 
+Valid Paranthesis
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> st;
+        for (char ch : s) {
+            if (ch == '[') {
+                st.push(']');
+            } else if (ch == '{') {
+                st.push('}');
+            } else if (ch == '(') {
+                st.push(')');
+            }
+            else {
+                if(st.empty() || st.top() != ch){
+                    return false;
+                } 
+                st.pop();
+            }
+        }
+        return st.empty();
+    }
+};
+
+Next Greater Element I
+https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1
+class Solution {
+	public:
+	vector<int> nextLargerElement(vector<int>& arr) {
+		// code here
+		int n = arr.size();
+		stack<int> st;
+		vector<int> ans(n);
+		
+		for (int i = n - 1; i >= 0; i--) {
+			while (!st.empty() && st.top() <= arr[i]) {
+				st.pop();
+			}
+				if (st.empty()) {
+					ans[i] = -1;
+				} else {
+					ans[i] = st.top();
+				}
+				st.push(arr[i]);
+		}
+		return ans;
+	}
+};
